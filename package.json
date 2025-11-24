@@ -1,0 +1,15 @@
+{
+  "name": "reviews-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n BE,FE -c auto \"npm start --prefix backend/rw-api\" \"npm run dev --prefix frontend/reviews-react\"",
+    "start": "concurrently -n BE,FE -c auto \"npm start --prefix backend/rw-api\" \"npm run preview --prefix frontend/reviews-react\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.10",
+    "react-router-dom": "^7.9.6"
+  }
+}
