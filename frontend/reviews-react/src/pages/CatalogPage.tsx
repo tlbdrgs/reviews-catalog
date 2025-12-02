@@ -29,7 +29,7 @@ export default function CatalogPage() {
         <>
         <div className="bg-stone-100">
             <div className="mx-5 pb-20">
-                <h1 className="text-center mb-15 text-3xl uppercase font-semibold">Product Catalog</h1>
+                <h1 className="text-center pt-5 mb-15 text-3xl uppercase font-semibold">Product Catalog</h1>
                 <Input onChange={handleSearch} placeholder="Search products..." className="w-full max-w-md mb-10 mx-auto block"/>
                 <div className="grid grid-cols-4 gap-10">
                     {filteredProducts && filteredProducts.length === 0 ? (
