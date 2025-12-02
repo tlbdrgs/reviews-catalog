@@ -9,9 +9,10 @@ export default function ProductCard({ product }: ProductCardProps) {
     const imageId = product.id.split('-').reduce((acc, part) => acc + part.charCodeAt(0), 0);
     
     return (
-        <div>
-            <div >
-                <img className="w-full object-cover rounded-lg drop-shadow-xl/25"
+        <Link to={`/products/${product.id}`}>
+        <div className="p-5 bg-neutral-200 rounded-lg drop-shadow-xl/25 hover:scale-[1.02] transition-all hover:drop-shadow-xl/50">
+            <div>
+                <img className="w-full object-cover rounded-lg"
                     src={`https://picsum.photos/400/300?random=${imageId}`} 
                     alt={product.name}
                     />
@@ -23,11 +24,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <span>
                         {product.reviews.length} review{product.reviews.length !== 1 ? 's' : ''}
                     </span>
-                    <span>
-                                        <Link to={`/products/${product.id}`}>View Details</Link>
-                    </span>
                 </div>
             </div>
         </div>
+        </Link>
     );
 }

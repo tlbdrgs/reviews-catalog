@@ -44,7 +44,7 @@ export default function DetailsPage() {
             <div className="flex items-center gap-2 mb-6">
                 <Rating value={averageRating} readOnly precision={0.1} />
                 <span className="text-gray-600">
-                    {averageRating} ({product.reviews.length} {product.reviews.length === 1 ? 'review' : 'reviews'})
+                    {averageRating.toFixed(2)} ({product.reviews.length} {product.reviews.length === 1 ? 'review' : 'reviews'})
                 </span>
             </div>
             
