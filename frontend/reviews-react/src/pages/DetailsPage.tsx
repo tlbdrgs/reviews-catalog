@@ -1,9 +1,11 @@
 import React from "react";
 import { useProducts } from "@/service/products";
 import type { Product, Review } from "@/entity/types";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Rating } from "@mui/material";
 import ReviewForm from "@/components/ReviewForm";
+import Reviews from "@/components/reviews";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function DetailsPage() {
     const { productId } = useParams();
@@ -34,15 +36,28 @@ export default function DetailsPage() {
     };
 
     return (
-        <div className="p-5">
-            <div className="max-w-md mb-6">
-                <img className="w-full object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
-            </div>
-            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-            <p className="mb-6">{product.description}</p>
+        <>
+            <header className="border-b-2 border-gray-200 bg-white">
+                <div className="py-4 px-5">
+                    <Link
+                        to="/"
+                        className="flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
+                    >
+                        <ArrowBackIcon className="h-4 w-4" />
+                        Back to Catalog
+                    </Link>
+                </div>
+            </header>
+            <div className="p-5">
+                <div className="mb-6 flex">
+                <img className="max-w-4xl w-full object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
+            {/* 16px padding for better spacing. without it everything is too close to the top. */}
+            <div className="ml-12 p-16">
+            <h1 className="text-7xl uppercase text-center font-bold mb-4">{product.name}</h1>
+
             
-            <div className="flex items-center gap-2 mb-6">
-                <Rating value={averageRating} readOnly precision={0.1} sx={{
+            <div className="flex items-center gap-2 mb-6 my-8">
+                <Rating value={averageRating} readOnly precision={0.1} size="large" sx={{
                             '& .MuiRating-iconFilled': {
                                 color: '#374151', // dark grey (gray-700)
                             },
@@ -54,39 +69,24 @@ export default function DetailsPage() {
                     {averageRating.toFixed(2)} ({product.reviews.length} {product.reviews.length === 1 ? 'review' : 'reviews'})
                 </span>
             </div>
-            
+                    <p className="mb-6 text-2xl text-gray-700">{product.description}</p>
+                </div>
+            </div>
+            <div className='col-span-4 my-8 border-b-2 border-gray-200'></div>
             <div className="flex gap-6">
                 {/* Left Side - Review Section */}
-                <div className="flex-1">
+                <div className="w-2/3">
                     <h2 className="text-2xl font-semibold mb-3">Reviews</h2>
-                    {product.reviews.length === 0 ? (
-                        <p>No reviews available for this product.</p>
-                    ) : (
-                        <div className="max-h-[300px] overflow-y-auto pr-2">
-                            {product.reviews.map((review: Review) => (
-                                <div key={review.id} className="mb-4 p-4 border rounded bg-white">
-                                    <p className="mb-2">{review.text}</p>
-                                    <Rating value={review.rating} readOnly size="small" sx={{
-                            '& .MuiRating-iconFilled': {
-                                color: '#374151', // dark grey (gray-700)
-                            },
-                            '& .MuiRating-iconEmpty': {
-                                color: '#d1d5db', // light grey (gray-300)
-                            },
-                        }}/>
-                                    <p className="text-sm text-gray-500 mt-2">{new Date(review.createdAt).toLocaleDateString()}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    <Reviews reviews={product.reviews} />
                 </div>
                 
                 {/* Right side - Review Form */}
-                <div className="w-96">
+                <div className="w-1/3">
                     <h2 className="text-2xl font-semibold mb-3">Add Review</h2>
                     <ReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
                 </div>
             </div>
-        </div>
+            </div>
+        </>
     );
 }

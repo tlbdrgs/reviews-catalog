@@ -12,7 +12,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     
     return (
         <Link to={`/products/${product.id}`}>
-        <div className="bg-neutral-200 rounded-lg drop-shadow-xl/25 hover:scale-[1.01] transition-all hover:drop-shadow-xl/50 cursor-pointer group flex flex-col h-[435px]">
+        <div className="bg-neutral-100 rounded-lg drop-shadow-xl/25 hover:scale-[1.01] transition-all hover:drop-shadow-xl/50 cursor-pointer group flex flex-col">
             <div className="overflow-hidden rounded-t-lg flex-shrink-0">
                 <img className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
                     src={`https://picsum.photos/400/300?random=${imageId}`} 
@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
             <div className="flex flex-col flex-1 p-5">
                 <h2 className="text-xl font-bold mb-2 line-clamp-2">{product.name}</h2>
-                <p className="text-xs mb-5 line-clamp-3 h-[60px]">{product.description}</p>
+                <p className="text-xs mb-5 line-clamp-3 h-[100px]">{product.description}</p>
                 <div className="flex items-center gap-2">
                     <Rating 
                         name="product-rating"

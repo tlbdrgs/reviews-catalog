@@ -55,50 +55,44 @@ export default function ReviewForm({ productId, onReviewAdded }: ReviewFormProps
     };
 
     return (
-        <form onSubmit={handleSubmit} className="p-4 border rounded-lg bg-white sticky top-5">
-            {error && (
-                <div className="mb-3 p-2 bg-red-100 text-red-700 rounded text-sm">
-                    {error}
-                </div>
-            )}
+        <form
+      onSubmit={handleSubmit}
+      className="flex-1 flex flex-col p-6 border border-gray-200 rounded-lg bg-white shadow-sm"
+    >
+      {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">{error}</div>}
 
-            <div className="mb-3">
-                <label className="block mb-1 text-sm font-medium">Rating</label>
-                <Rating
-                    value={rating}
-                    onChange={(_, newValue) => setRating(newValue)}
-                    sx={{
-                            '& .MuiRating-iconFilled': {
-                                color: '#374151', // dark grey (gray-700)
-                            },
-                            '& .MuiRating-iconEmpty': {
-                                color: '#d1d5db', // light grey (gray-300)
-                            },
-                        }}
-                />
-            </div>
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700">Rating</label>
+        <Rating
+          value={rating}
+          onChange={(_, newValue) => setRating(newValue)}
+          sx={{
+            "& .MuiRating-iconFilled": {
+              color: "#374151", // dark grey (gray-700)
+            },
+            "& .MuiRating-iconEmpty": {
+              color: "#d1d5db", // light grey (gray-300)
+            },
+          }}
+        />
+      </div>
 
-            <div className="mb-3">
-                <label className="block mb-1 text-sm font-medium">Review</label>
-                <textarea
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    onFocus={() => setIsExpanded(true)}
-                    onBlur={() => !text && setIsExpanded(false)}
-                    placeholder="Write your review here..."
-                    className={`w-full p-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 transition-all duration-300 ease-in-out ${
-                        isExpanded ? 'min-h-[80px]' : 'min-h-[40px]'
-                    }`}
-                    disabled={isSubmitting}
-                />
-            </div>
+      <div className="mb-4 flex-1">
+        <label className="block mb-2 text-sm font-medium text-gray-700">Review</label>
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onFocus={() => setIsExpanded(true)}
+          onBlur={() => !text && setIsExpanded(false)}
+          placeholder="Write your review here..."
+          className={`w-full h-[140px] p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all duration-300 ease-in-out`}
+          disabled={isSubmitting}
+        />
+      </div>
 
-            <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full">
-                {isSubmitting ? "Submitting..." : "Submit Review"}
-            </Button>
-        </form>
+      <Button type="submit" disabled={isSubmitting} className="w-full mt-auto">
+        {isSubmitting ? "Submitting..." : "Submit Review"}
+      </Button>
+    </form>
     );
 }
