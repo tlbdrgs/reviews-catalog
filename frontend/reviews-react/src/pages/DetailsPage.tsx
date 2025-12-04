@@ -42,7 +42,14 @@ export default function DetailsPage() {
             <p className="mb-6">{product.description}</p>
             
             <div className="flex items-center gap-2 mb-6">
-                <Rating value={averageRating} readOnly precision={0.1} />
+                <Rating value={averageRating} readOnly precision={0.1} sx={{
+                            '& .MuiRating-iconFilled': {
+                                color: '#374151', // dark grey (gray-700)
+                            },
+                            '& .MuiRating-iconEmpty': {
+                                color: '#d1d5db', // light grey (gray-300)
+                            },
+                        }} />
                 <span className="text-gray-600">
                     {averageRating.toFixed(2)} ({product.reviews.length} {product.reviews.length === 1 ? 'review' : 'reviews'})
                 </span>
@@ -59,7 +66,14 @@ export default function DetailsPage() {
                             {product.reviews.map((review: Review) => (
                                 <div key={review.id} className="mb-4 p-4 border rounded bg-white">
                                     <p className="mb-2">{review.text}</p>
-                                    <Rating value={review.rating} readOnly size="small" />
+                                    <Rating value={review.rating} readOnly size="small" sx={{
+                            '& .MuiRating-iconFilled': {
+                                color: '#374151', // dark grey (gray-700)
+                            },
+                            '& .MuiRating-iconEmpty': {
+                                color: '#d1d5db', // light grey (gray-300)
+                            },
+                        }}/>
                                     <p className="text-sm text-gray-500 mt-2">{new Date(review.createdAt).toLocaleDateString()}</p>
                                 </div>
                             ))}

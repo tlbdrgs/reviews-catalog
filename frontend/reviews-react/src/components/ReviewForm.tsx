@@ -67,6 +67,14 @@ export default function ReviewForm({ productId, onReviewAdded }: ReviewFormProps
                 <Rating
                     value={rating}
                     onChange={(_, newValue) => setRating(newValue)}
+                    sx={{
+                            '& .MuiRating-iconFilled': {
+                                color: '#374151', // dark grey (gray-700)
+                            },
+                            '& .MuiRating-iconEmpty': {
+                                color: '#d1d5db', // light grey (gray-300)
+                            },
+                        }}
                 />
             </div>
 
