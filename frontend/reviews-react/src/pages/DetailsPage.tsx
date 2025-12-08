@@ -4,7 +4,7 @@ import type { Product, Review } from "@/entity/types";
 import { useParams, Link } from "react-router-dom";
 import { Rating } from "@mui/material";
 import ReviewForm from "@/components/ReviewForm";
-import Reviews from "@/components/reviews";
+import Reviews from "@/components/Reviews";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function DetailsPage() {
