@@ -38,7 +38,7 @@ export default function DetailsPage() {
     return (
         <>
             <header className="border-b-2 border-gray-200 bg-white">
-                <div className="py-4 px-5">
+                <div className="py-3 px-4 md:py-4 md:px-5">
                     <Link
                         to="/"
                         className="flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
@@ -48,15 +48,15 @@ export default function DetailsPage() {
                     </Link>
                 </div>
             </header>
-            <div className="p-5">
-                <div className="mb-6 flex">
-                <img className="max-w-4xl w-full object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
+            <div className="p-3 md:p-5">
+                <div className="mb-6 flex flex-col lg:flex-row gap-4 lg:gap-0">
+                <img className="w-full lg:max-w-4xl object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
             {/* 16px padding for better spacing. without it everything is too close to the top. */}
-            <div className="ml-12 p-16">
-            <h1 className="text-7xl uppercase text-center font-bold mb-4">{product.name}</h1>
+            <div className="lg:ml-12 p-4 md:p-8 lg:p-16">
+            <h1 className="text-3xl md:text-5xl lg:text-7xl uppercase text-center font-bold mb-4">{product.name}</h1>
 
             
-            <div className="flex items-center gap-2 mb-6 my-8">
+            <div className="flex flex-col sm:flex-row items-center gap-2 mb-4 md:mb-6 my-4 md:my-8">
                 <Rating value={averageRating} readOnly precision={0.1} size="large" sx={{
                             '& .MuiRating-iconFilled': {
                                 color: '#374151', // dark grey (gray-700)
@@ -65,24 +65,24 @@ export default function DetailsPage() {
                                 color: '#d1d5db', // light grey (gray-300)
                             },
                         }} />
-                <span className="text-gray-600">
+                <span className="text-sm md:text-base text-gray-600">
                     {averageRating.toFixed(2)} ({product.reviews.length} {product.reviews.length === 1 ? 'review' : 'reviews'})
                 </span>
             </div>
-                    <p className="mb-6 text-2xl text-gray-700">{product.description}</p>
+                    <p className="mb-6 text-base md:text-xl lg:text-2xl text-gray-700">{product.description}</p>
                 </div>
             </div>
-            <div className='col-span-4 my-8 border-b-2 border-gray-200'></div>
-            <div className="flex gap-6">
+            <div className='col-span-4 my-4 md:my-8 border-b-2 border-gray-200'></div>
+            <div className="flex flex-col lg:flex-row gap-6">
                 {/* Left Side - Review Section */}
-                <div className="w-2/3">
-                    <h2 className="text-2xl font-semibold mb-3">Reviews</h2>
+                <div className="w-full lg:w-2/3">
+                    <h2 className="text-xl md:text-2xl font-semibold mb-3">Reviews</h2>
                     <Reviews reviews={product.reviews} />
                 </div>
                 
                 {/* Right side - Review Form */}
-                <div className="w-1/3">
-                    <h2 className="text-2xl font-semibold mb-3">Add Review</h2>
+                <div className="w-full lg:w-1/3">
+                    <h2 className="text-xl md:text-2xl font-semibold mb-3">Add Review</h2>
                     <ReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
                 </div>
             </div>
