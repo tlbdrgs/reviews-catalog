@@ -1,6 +1,6 @@
 import React from "react";
-import { useProducts } from "@/service/products";
-import type { Product, Review } from "@/entity/types";
+import { useProduct } from "@/service/products";
+import type { Review } from "@/entity/types";
 import { useParams, Link } from "react-router-dom";
 import { Rating } from "@mui/material";
 import ReviewForm from "@/components/ReviewForm";
@@ -9,8 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function DetailsPage() {
     const { productId } = useParams();
-    const { products, isPending, isError } = useProducts();
-    const product: Product | undefined = products?.find(p => p.id === productId);
+    const { product, isPending, isError } = useProduct(productId);
 
     if (isPending) {
         return <div>Loading product details...</div>;
@@ -30,11 +29,6 @@ export default function DetailsPage() {
 
     const averageRating = calculateAverageRating(product.reviews);
 
-    const handleReviewAdded = () => {
-        // Refetch or invalidate the query to show new review
-        window.location.reload();
-    };
-
     return (
         <>
             <header className="border-b-2 border-gray-200 bg-white">
@@ -50,8 +44,7 @@ export default function DetailsPage() {
             </header>
             <div className="p-3 md:p-5">
                 <div className="mb-6 flex flex-col lg:flex-row gap-4 lg:gap-0">
-                <img className="w-full lg:max-w-4xl object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
-            {/* 16px padding for better spacing. without it everything is too close to the top. */}
+                <img className="w-full lg:max-w-3xl object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
             <div className="lg:ml-12 p-4 md:p-8 lg:p-16">
             <h1 className="text-3xl md:text-5xl lg:text-7xl uppercase text-center font-bold mb-4">{product.name}</h1>
 
@@ -83,7 +76,7 @@ export default function DetailsPage() {
                 {/* Right side - Review Form */}
                 <div className="w-full lg:w-1/3">
                     <h2 className="text-xl md:text-2xl font-semibold mb-3">Add Review</h2>
-                    <ReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
+                    <ReviewForm productId={product.id} />
                 </div>
             </div>
             </div>

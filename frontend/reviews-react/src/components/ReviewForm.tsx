@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Rating } from "@mui/material";
 import { Button } from "./button";
+import { useAddReview } from "@/service/products";
 
 
 interface ReviewFormProps {
     productId: string;
-    onReviewAdded: () => void;
 }
 
-export default function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
+export default function ReviewForm({ productId }: ReviewFormProps) {
     const [text, setText] = useState("");
     const [rating, setRating] = useState<number | null>(0);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
+    const addReviewMutation = useAddReview(productId);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,30 +28,20 @@ export default function ReviewForm({ productId, onReviewAdded }: ReviewFormProps
             return;
         }
 
-        setIsSubmitting(true);
         setError(null);
 
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/products/${productId}/reviews`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+        addReviewMutation.mutate(
+            { text, rating },
+            {
+                onSuccess: () => {
+                    setText("");
+                    setRating(0);
                 },
-                body: JSON.stringify({ text, rating }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to submit review");
+                onError: (err) => {
+                    setError(err instanceof Error ? err.message : "Failed to submit review");
+                },
             }
-
-            setText("");
-            setRating(0);
-            onReviewAdded();
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to submit review");
-        } finally {
-            setIsSubmitting(false);
-        }
+        );
     };
 
     return (
@@ -86,12 +76,12 @@ export default function ReviewForm({ productId, onReviewAdded }: ReviewFormProps
           onBlur={() => !text && setIsExpanded(false)}
           placeholder="Write your review here..."
           className={`w-full h-[140px] p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all duration-300 ease-in-out`}
-          disabled={isSubmitting}
+          disabled={addReviewMutation.isPending}
         />
       </div>
 
-      <Button type="submit" disabled={isSubmitting} className="w-full mt-auto">
-        {isSubmitting ? "Submitting..." : "Submit Review"}
+      <Button type="submit" disabled={addReviewMutation.isPending} className="w-full mt-auto">
+        {addReviewMutation.isPending ? "Submitting..." : "Submit Review"}
       </Button>
     </form>
     );
