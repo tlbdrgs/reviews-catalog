@@ -1,19 +1,55 @@
 import React from "react";
-import { useProducts } from "@/service/products";
-import type { Product, Review } from "@/entity/types";
+import { useProduct } from "@/service/products";
+import type { Review } from "@/entity/types";
 import { useParams, Link } from "react-router-dom";
 import { Rating } from "@mui/material";
-import ReviewForm from "@/components/ReviewForm";
-import Reviews from "@/components/Reviews";
+import ReviewForm from "@/components/ReviewForm/ReviewForm";
+import Reviews from "@/components/Reviews/Reviews";
+import ReviewFormSkeleton from "@/components/ReviewForm/ReviewFormSkeleton";
+import ReviewsSkeleton from "@/components/Reviews/ReviewsSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function DetailsPage() {
     const { productId } = useParams();
-    const { products, isPending, isError } = useProducts();
-    const product: Product | undefined = products?.find(p => p.id === productId);
+    const { product, isPending, isError } = useProduct(productId);
 
     if (isPending) {
-        return <div>Loading product details...</div>;
+        return (
+            <>
+                <header className="border-b-2 border-gray-200 bg-white">
+                    <div className="py-3 px-4 md:py-4 md:px-5">
+                        <Skeleton className="h-5 w-32" />
+                    </div>
+                </header>
+                <div className="p-3 md:p-5">
+                    <div className="mb-6 flex flex-col lg:flex-row gap-4 lg:gap-0">
+                        <Skeleton className="w-full lg:max-w-3xl h-[300px] rounded-lg" />
+                        <div className="lg:ml-12 p-4 md:p-8 lg:p-16 flex-1">
+                            <Skeleton className="h-12 w-3/4 mb-4 mx-auto" />
+                            <div className="flex flex-col sm:flex-row items-center gap-2 mb-4 md:mb-6 my-4 md:my-8">
+                                <Skeleton className="h-8 w-32" />
+                                <Skeleton className="h-5 w-24" />
+                            </div>
+                            <Skeleton className="h-6 w-full mb-2" />
+                            <Skeleton className="h-6 w-full mb-2" />
+                            <Skeleton className="h-6 w-2/3" />
+                        </div>
+                    </div>
+                    <div className='col-span-4 my-4 md:my-8 border-b-2 border-gray-200'></div>
+                    <div className="flex flex-col lg:flex-row gap-6">
+                        <div className="w-full lg:w-2/3">
+                            <Skeleton className="h-7 w-24 mb-3" />
+                            <ReviewsSkeleton />
+                        </div>
+                        <div className="w-full lg:w-1/3">
+                            <Skeleton className="h-7 w-32 mb-3" />
+                            <ReviewFormSkeleton />
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
     }
 
     if (isError || !product) {
@@ -30,11 +66,6 @@ export default function DetailsPage() {
 
     const averageRating = calculateAverageRating(product.reviews);
 
-    const handleReviewAdded = () => {
-        // Refetch or invalidate the query to show new review
-        window.location.reload();
-    };
-
     return (
         <>
             <header className="border-b-2 border-gray-200 bg-white">
@@ -50,8 +81,7 @@ export default function DetailsPage() {
             </header>
             <div className="p-3 md:p-5">
                 <div className="mb-6 flex flex-col lg:flex-row gap-4 lg:gap-0">
-                <img className="w-full lg:max-w-4xl object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
-            {/* 16px padding for better spacing. without it everything is too close to the top. */}
+                <img className="w-full lg:max-w-3xl object-cover rounded-lg drop-shadow-xl/25" src={`https://picsum.photos/400/300?random=${imageId}`} alt={product.name} />
             <div className="lg:ml-12 p-4 md:p-8 lg:p-16">
             <h1 className="text-3xl md:text-5xl lg:text-7xl uppercase text-center font-bold mb-4">{product.name}</h1>
 
@@ -83,7 +113,7 @@ export default function DetailsPage() {
                 {/* Right side - Review Form */}
                 <div className="w-full lg:w-1/3">
                     <h2 className="text-xl md:text-2xl font-semibold mb-3">Add Review</h2>
-                    <ReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
+                    <ReviewForm productId={product.id} />
                 </div>
             </div>
             </div>
