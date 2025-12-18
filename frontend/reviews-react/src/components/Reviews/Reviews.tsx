@@ -1,4 +1,4 @@
-import type { Review } from "@/entity/types";
+import type { Review } from "@/entities/types";
 import ReviewItem from "./ReviewItem";
 
 type ReviewsProps = {

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Rating } from "@mui/material";
-import { Button } from "../ui/button";
-import { useAddReview } from "@/service/products";
+import { Button } from "@/components/ui/button";
+import { useAddReview } from "@/services/products";
 import { toast } from "sonner";
+import { RATING_STYLES } from "@/lib/constants";
 
 type ReviewFormProps = {
   productId: string;
@@ -15,18 +16,6 @@ export default function ReviewForm({ productId }: ReviewFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // if (!text.trim()) {
-    //     setError("Please enter a review");
-    //     return;
-    // }
-
-    // if (!rating || rating === 0) {
-    //     setError("Please select a rating");
-    //     return;
-    // }
-
-    // SWITCHED FROM ERROR STATE TO TOAST NOTIFICATIONS
 
     if (!text.trim()) {
       toast.error("Please enter a review");
@@ -45,9 +34,10 @@ export default function ReviewForm({ productId }: ReviewFormProps) {
           setText("");
           setRating(0);
         },
-        onError: (err) => {
-          toast.error("Failed to submit review");
-          // setError(err instanceof Error ? err.message : "Failed to submit review");
+        onError: (error) => {
+          const errorMessage =
+            error instanceof Error ? error.message : "Failed to submit review";
+          toast.error(errorMessage);
         },
       }
     );
@@ -65,14 +55,7 @@ export default function ReviewForm({ productId }: ReviewFormProps) {
         <Rating
           value={rating}
           onChange={(_, newValue) => setRating(newValue)}
-          sx={{
-            "& .MuiRating-iconFilled": {
-              color: "#374151", // dark grey (gray-700)
-            },
-            "& .MuiRating-iconEmpty": {
-              color: "#d1d5db", // light grey (gray-300)
-            },
-          }}
+          sx={RATING_STYLES}
         />
       </div>
 

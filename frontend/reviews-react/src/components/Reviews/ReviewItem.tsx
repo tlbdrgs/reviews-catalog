@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Rating } from "@mui/material";
-import type { Review } from "@/entity/types";
+import type { Review } from "@/entities/types";
+import { MAX_REVIEW_LENGTH, RATING_STYLES } from "@/lib/constants";
 
 type ReviewItemProps = {
   review: Review;
 };
-
-const MAX_REVIEW_LENGTH = 200;
 
 export default function ReviewItem({ review }: ReviewItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,14 +22,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
           value={review.rating}
           readOnly
           size="small"
-          sx={{
-            "& .MuiRating-iconFilled": {
-              color: "#374151", // dark grey (gray-700)
-            },
-            "& .MuiRating-iconEmpty": {
-              color: "#d1d5db", // light grey (gray-300)
-            },
-          }}
+          sx={RATING_STYLES}
         />
         <p className="text-sm text-gray-500 shrink-0">
           {new Date(review.createdAt).toLocaleDateString()}

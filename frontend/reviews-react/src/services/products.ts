@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Product, Review } from "../entity/types";
+import type { Product } from "@/entities/types";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -52,30 +52,29 @@ export function useAddReview(productId: string) {
     return useMutation({
         mutationFn: async ({ text, rating }: { text: string; rating: number }) => {
             try {
-            const response = await fetch(`${BASE_URL}/products/${productId}/reviews`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ text, rating }),
-            });
+                const response = await fetch(`${BASE_URL}/products/${productId}/reviews`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ text, rating }),
+                });
 
-            if (!response.ok) {
-                throw new Error("Failed to submit review");
-            }
+                if (!response.ok) {
+                    throw new Error("Failed to submit review");
+                }
 
-            return (await response.json()) as { product: Product };
+                return (await response.json()) as { product: Product };
             } catch (error) {
-                if(error instanceof TypeError)
+                if (error instanceof TypeError) {
                     throw new Error("Network error: Unable to reach the server");
+                }
                 throw error;
             }
         },
         onSuccess: (data) => {
-            // Update the single product cache
             queryClient.setQueryData(["product", productId], data.product);
             
-            // Also update the products list cache if it exists
             queryClient.setQueryData(["products"], (oldData: Product[] | undefined) => {
                 if (!oldData) return oldData;
                 return oldData.map(p => p.id === productId ? data.product : p);

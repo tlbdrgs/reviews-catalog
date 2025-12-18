@@ -1,5 +1,5 @@
-import { useProduct } from "@/service/products";
-import type { Review } from "@/entity/types";
+import { useProduct } from "@/services/products";
+import type { Review } from "@/entities/types";
 import { useParams, Link } from "react-router-dom";
 import { Rating } from "@mui/material";
 import ReviewForm from "@/components/ReviewForm/ReviewForm";
@@ -8,6 +8,8 @@ import ReviewFormSkeleton from "@/components/ReviewForm/ReviewFormSkeleton";
 import ReviewsSkeleton from "@/components/Reviews/ReviewsSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { calculateAverageRating, generateImageId } from "@/lib/utils";
+import { RATING_STYLES } from "@/lib/constants";
 
 export default function DetailsPage() {
   const { productId } = useParams();
@@ -51,14 +53,8 @@ export default function DetailsPage() {
 
   const isLoadError = isError || !product;
 
-  const imageId = product
-    ? product.id.split("-").reduce((acc, part) => acc + part.charCodeAt(0), 0)
-    : 0;
-
-  const averageRating = product
-    ? product.reviews.reduce((sum, r) => sum + r.rating, 0) /
-        product.reviews.length || 0
-    : 0;
+  const imageId = product ? generateImageId(product.id) : 0;
+  const averageRating = product ? calculateAverageRating(product.reviews) : 0;
 
   return (
     <>
@@ -99,10 +95,7 @@ export default function DetailsPage() {
                     readOnly
                     precision={0.1}
                     size="large"
-                    sx={{
-                      "& .MuiRating-iconFilled": { color: "#374151" },
-                      "& .MuiRating-iconEmpty": { color: "#d1d5db" },
-                    }}
+                    sx={RATING_STYLES}
                   />
                   <span className="text-sm md:text-base text-gray-600">
                     {averageRating.toFixed(2)} ({product.reviews.length}{" "}

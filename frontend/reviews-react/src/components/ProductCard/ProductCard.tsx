@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-import type { Product } from "@/entity/types";
+import type { Product } from "@/entities/types";
 import Rating from "@mui/material/Rating";
+import { calculateAverageRating, generateImageId } from "@/lib/utils";
+import { RATING_STYLES } from "@/lib/constants";
 
 type ProductCardProps = {
   product: Product;
@@ -8,14 +10,8 @@ type ProductCardProps = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const numberOfReviews = product.reviews.length;
-  const imageId = product.id
-    .split("-")
-    .reduce((acc, part) => acc + part.charCodeAt(0), 0);
-  const averageRating =
-    numberOfReviews > 0
-      ? product.reviews.reduce((sum, review) => sum + review.rating, 0) /
-        numberOfReviews
-      : 0;
+  const imageId = generateImageId(product.id);
+  const averageRating = calculateAverageRating(product.reviews);
 
   return (
     <Link to={`/products/${product.id}`}>
@@ -40,14 +36,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               value={averageRating}
               readOnly
               precision={0.1}
-              sx={{
-                "& .MuiRating-iconFilled": {
-                  color: "#374151", // dark grey (gray-700)
-                },
-                "& .MuiRating-iconEmpty": {
-                  color: "#d1d5db", // light grey (gray-300)
-                },
-              }}
+              sx={RATING_STYLES}
             />
             <span className="text-xs text-gray-600">({numberOfReviews})</span>
           </div>

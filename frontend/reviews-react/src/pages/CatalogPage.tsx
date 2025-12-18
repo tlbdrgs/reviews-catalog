@@ -1,6 +1,6 @@
-import { useProducts } from "../service/products";
-import ProductCard from "../components/ProductCard/ProductCard";
-import ProductCardSkeleton from "../components/ProductCard/ProductCardSkeleton";
+import { useProducts } from "@/services/products";
+import ProductCard from "@/components/ProductCard/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCard/ProductCardSkeleton";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -28,10 +28,10 @@ export default function CatalogPage() {
   }
 
   const filteredProducts = products?.filter((product) => {
-    const q = searchInput.toLowerCase();
+    const searchQuery = searchInput.toLowerCase();
     return (
-      product.name.toLowerCase().includes(q) ||
-      product.description.toLowerCase().includes(q)
+      product.name.toLowerCase().includes(searchQuery) ||
+      product.description.toLowerCase().includes(searchQuery)
     );
   });
 
