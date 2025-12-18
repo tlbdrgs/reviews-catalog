@@ -4,65 +4,64 @@ import { Button } from "../ui/button";
 import { useAddReview } from "@/service/products";
 import { toast } from "sonner";
 
-
-interface ReviewFormProps {
-    productId: string;
-}
+type ReviewFormProps = {
+  productId: string;
+};
 
 export default function ReviewForm({ productId }: ReviewFormProps) {
-    const [text, setText] = useState("");
-    const [rating, setRating] = useState<number | null>(0);
-    const addReviewMutation = useAddReview(productId);
+  const [text, setText] = useState("");
+  const [rating, setRating] = useState<number | null>(0);
+  const addReviewMutation = useAddReview(productId);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        // if (!text.trim()) {
-        //     setError("Please enter a review");
-        //     return;
-        // }
-        
-        // if (!rating || rating === 0) {
-        //     setError("Please select a rating");
-        //     return;
-        // }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        // SWITCHED FROM ERROR STATE TO TOAST NOTIFICATIONS
+    // if (!text.trim()) {
+    //     setError("Please enter a review");
+    //     return;
+    // }
 
-        if (!text.trim()) {
-          toast.error("Please enter a review");
-          return;
-        }
-        if (!rating || rating === 0) {
-            toast.error("Please select a rating");
-            return;
-        }
+    // if (!rating || rating === 0) {
+    //     setError("Please select a rating");
+    //     return;
+    // }
 
+    // SWITCHED FROM ERROR STATE TO TOAST NOTIFICATIONS
 
-        addReviewMutation.mutate(
-            { text, rating },
-            {
-                onSuccess: () => {
-                    toast.success("Review submitted successfully");
-                    setText("");
-                    setRating(0);
-                },
-                onError: (err) => {
-                    toast.error("Failed to submit review");
-                    // setError(err instanceof Error ? err.message : "Failed to submit review");
-                },
-            }
-        );
-    };
+    if (!text.trim()) {
+      toast.error("Please enter a review");
+      return;
+    }
+    if (!rating || rating === 0) {
+      toast.error("Please select a rating");
+      return;
+    }
 
-    return (
-        <form
+    addReviewMutation.mutate(
+      { text, rating },
+      {
+        onSuccess: () => {
+          toast.success("Review submitted successfully");
+          setText("");
+          setRating(0);
+        },
+        onError: (err) => {
+          toast.error("Failed to submit review");
+          // setError(err instanceof Error ? err.message : "Failed to submit review");
+        },
+      }
+    );
+  };
+
+  return (
+    <form
       onSubmit={handleSubmit}
       className="flex-1 flex flex-col p-6 border border-gray-200 rounded-lg bg-white shadow-sm"
     >
-
       <div className="mb-4">
-        <label className="block mb-2 text-sm font-medium text-gray-700">Rating</label>
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Rating
+        </label>
         <Rating
           value={rating}
           onChange={(_, newValue) => setRating(newValue)}
@@ -78,7 +77,9 @@ export default function ReviewForm({ productId }: ReviewFormProps) {
       </div>
 
       <div className="mb-4 flex-1">
-        <label className="block mb-2 text-sm font-medium text-gray-700">Review</label>
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Review
+        </label>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -88,9 +89,13 @@ export default function ReviewForm({ productId }: ReviewFormProps) {
         />
       </div>
 
-      <Button type="submit" disabled={addReviewMutation.isPending} className="w-full mt-auto">
+      <Button
+        type="submit"
+        disabled={addReviewMutation.isPending}
+        className="w-full mt-auto"
+      >
         {addReviewMutation.isPending ? "Submitting..." : "Submit Review"}
       </Button>
     </form>
-    );
+  );
 }
