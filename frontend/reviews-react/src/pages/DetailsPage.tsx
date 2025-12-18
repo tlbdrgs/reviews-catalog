@@ -1,5 +1,4 @@
 import { useProduct } from "@/services/products";
-import type { Review } from "@/entities/types";
 import { useParams, Link } from "react-router-dom";
 import { Rating } from "@mui/material";
 import ReviewForm from "@/components/ReviewForm/ReviewForm";
